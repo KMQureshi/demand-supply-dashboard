@@ -6,15 +6,11 @@
   "scripts": {
     "start": "node server-new.js",
     "dev": "nodemon server-new.js",
-    "build": "echo 'Building frontend...' && npm run build:react",
-    "build:react": "react-scripts build",
-    "test": "node test-alerts.js",
-    "test:email": "node -e \"const EmailService = require('./alerts/email.service'); EmailService.sendTestEmail().then(r => console.log('✅ Email sent:', r.messageId)).catch(e => console.error('❌ Error:', e.message))\"",
-    "test:whatsapp": "node -e \"const WhatsAppService = require('./whatsapp-service'); WhatsAppService.testConnection().then(r => console.log('WhatsApp test:', r.success ? '✅ Success' : '❌ Failed')).catch(console.error)\"",
-    "whatsapp:qr": "type whatsapp-qr-code.txt 2>nul || echo 'QR code not generated yet. Run: npm run dev'",
-    "setup": "npm install && echo '✅ Setup complete. Please configure .env file'",
-    "heroku-postbuild": "npm run build",
-    "deploy": "echo 'Ready for deployment to Heroku/Railway/Render'"
+    "build": "echo 'No build required for Node.js backend'",
+    "test": "echo 'No tests configured'",
+    "vercel-build": "npm install",
+    "railway": "node server-new.js",
+    "render": "node server-new.js"
   },
   "keywords": [
     "dashboard",
@@ -26,7 +22,7 @@
     "procurement",
     "production"
   ],
-  "author": "BB Construction",
+  "author": "BB Construction <bbdemandsupply@gmail.com>",
   "license": "MIT",
   "dependencies": {
     "axios": "^1.6.2",
@@ -40,15 +36,8 @@
     "puppeteer": "^21.6.1",
     "puppeteer-core": "^21.6.1",
     "qrcode-terminal": "^0.12.0",
+    "uuid": "^9.0.1",
     "whatsapp-web.js": "^1.23.0",
-    "compression": "^1.7.4",
-    "helmet": "^7.1.0",
-    "morgan": "^1.10.0",
-    "serve-favicon": "^2.5.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-scripts": "^5.0.1",
-    "recharts": "^2.10.4",
     "xlsx": "^0.18.5",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.8.2"
@@ -60,6 +49,11 @@
     "node": ">=18.0.0",
     "npm": ">=9.0.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KMQureshi/demand-supply-dashboard.git"
+  },
+  "homepage": "https://demand-supply-app.vercel.app",
   "browserslist": {
     "production": [
       ">0.2%",
@@ -71,11 +65,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/yourusername/demand-supply-dashboard.git"
-  },
-  "homepage": "https://your-app.herokuapp.com",
-  "proxy": "http://localhost:3001"
+  }
 }
