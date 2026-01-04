@@ -1,0 +1,15 @@
+[build]
+builder = "nixpacks"
+buildCommand = "npm install --omit=optional"
+
+[deploy]
+startCommand = "node server-new.js"
+healthcheckPath = "/api/health"
+restartPolicyType = "ON_FAILURE"
+
+[vars]
+NODE_ENV = "production"
+PORT = "3000"
+EMAIL_USER = "bbdemandsupply@gmail.com"
+EMAIL_PASSWORD = "plsk buqf yyby rpfw"
+WHATSAPP_GROUP_NAME = "BB-Demand & Supply"
