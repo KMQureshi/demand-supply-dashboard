@@ -1,4 +1,44 @@
 // ============================================
+// RAILWAY PRODUCTION CONFIGURATION
+// Add this at the VERY TOP of your file
+// ============================================
+
+// Essential Railway variables
+const PORT = process.env.PORT || 3000;  // Railway uses 3000
+const NODE_ENV = process.env.NODE_ENV || 'development';
+
+// Email configuration
+const EMAIL_CONFIG = {
+  host: process.env.EMAIL_HOST || 'smtp.gmail.com',
+  port: parseInt(process.env.EMAIL_PORT) || 587,
+  user: process.env.EMAIL_USER || 'bbdemandsupply@gmail.com',
+  pass: process.env.EMAIL_PASSWORD || '',
+  from: process.env.EMAIL_FROM || 'bbdemandsupply@gmail.com',
+  to: process.env.EMAIL_TO || 'bbdemandsupply@gmail.com'
+};
+
+// WhatsApp configuration
+const WHATSAPP_CONFIG = {
+  enabled: process.env.WHATSAPP_ENABLED !== 'false',
+  groupName: process.env.WHATSAPP_GROUP_NAME || 'BB-Demand & Supply',
+  sessionPath: './whatsapp_session'
+};
+
+// Log configuration
+console.log('🚀 Railway Deployment Configuration:');
+console.log('==================================');
+console.log(`Port: ${PORT}`);
+console.log(`Environment: ${NODE_ENV}`);
+console.log(`Email User: ${EMAIL_CONFIG.user ? '✅ Set' : '❌ Not set'}`);
+console.log(`Email Password: ${EMAIL_CONFIG.pass ? '✅ Set' : '❌ Not set'}`);
+console.log(`WhatsApp Group: ${WHATSAPP_CONFIG.groupName}`);
+console.log('==================================');
+
+// ============================================
+// END OF CONFIGURATION
+// Your existing 2300+ lines continue below...
+// ============================================
+// ============================================
 // PRODUCTION DEPLOYMENT CONFIGURATION
 // Add this section at the VERY TOP of your file
 // ============================================

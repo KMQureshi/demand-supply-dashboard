@@ -1,0 +1,34 @@
+{
+  "build": {
+    "builder": "NIXPACKS",
+    "buildCommand": "npm install"
+  },
+  "deploy": {
+    "startCommand": "node server-new.js",
+    "healthcheckPath": "/api/health",
+    "restartPolicyType": "ON_FAILURE"
+  },
+  "variables": {
+    "NODE_ENV": {
+      "description": "Environment",
+      "value": "production"
+    },
+    "PORT": {
+      "description": "Port to run server",
+      "value": "3000"
+    },
+    "EMAIL_USER": {
+      "description": "Gmail address for alerts",
+      "value": "bbdemandsupply@gmail.com"
+    },
+    "EMAIL_PASSWORD": {
+      "description": "Google App Password",
+      "value": "plsk buqf yyby rpfw",
+      "sync": false
+    },
+    "WHATSAPP_GROUP_NAME": {
+      "description": "WhatsApp group for alerts",
+      "value": "BB-Demand & Supply"
+    }
+  }
+}
