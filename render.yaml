@@ -2,9 +2,43 @@ services:
   - type: web
     name: demand-supply-dashboard
     env: node
+    region: oregon
+    plan: free
+    branch: main
     buildCommand: npm install
     startCommand: node server-new.js
+    healthCheckPath: /api/health
+    autoDeploy: true
     envVars:
       - key: NODE_ENV
         value: production
-    plan: free
+      - key: PORT
+        value: 3001
+      - key: APP_NAME
+        value: Demand-Supply Dashboard
+      - key: APP_URL
+        value: https://demand-supply-dashboard.onrender.com
+      - key: EMAIL_HOST
+        value: smtp.gmail.com
+      - key: EMAIL_PORT
+        value: "587"
+      - key: EMAIL_USER
+        value: bbdemandsupply@gmail.com
+      - key: EMAIL_PASSWORD
+        sync: false  # You'll set this manually in Render dashboard
+      - key: EMAIL_FROM
+        value: bbdemandsupply@gmail.com
+      - key: EMAIL_TO
+        value: bbdemandsupply@gmail.com
+      - key: WHATSAPP_GROUP_NAME
+        value: BB-Demand & Supply
+      - key: WHATSAPP_ENABLED
+        value: "true"
+      - key: DB_FILE
+        value: db.json
+      - key: DAILY_REPORT_ENABLED
+        value: "true"
+      - key: REPORT_HOUR
+        value: "15"
+      - key: REPORT_MINUTE
+        value: "0"
