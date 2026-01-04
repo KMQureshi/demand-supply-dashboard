@@ -1,0 +1,38 @@
+# Node modules
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+# Puppeteer/Chromium files
+.local-chromium/
+chromium/
+chrome-win/
+chrome-mac/
+chrome-linux/
+
+# WhatsApp session
+whatsapp_session/
+whatsapp-session.json
+whatsapp-qr-code.txt
+whatsapp-qr.png
+
+# Environment
+.env
+.env.local
+
+# Database
+db.json
+backups/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+
+# Logs
+*.log

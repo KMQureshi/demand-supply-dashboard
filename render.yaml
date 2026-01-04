@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: demand-supply-dashboard
+    env: node
+    buildCommand: npm install
+    startCommand: node server-new.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+    plan: free

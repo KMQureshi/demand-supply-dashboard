@@ -1,0 +1,107 @@
+# ============================================
+# GITIGNORE FOR DEMAND-SUPPLY DASHBOARD
+# ============================================
+
+# Node modules
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+.yarn-integrity
+
+# Puppeteer/Chromium - CRITICAL: Exclude large files
+.local-chromium/
+chromium/
+chrome-win/
+chrome-mac/
+chrome-linux/
+
+# WhatsApp session
+whatsapp_session/
+whatsapp-session.json
+whatsapp-session/
+whatsapp-qr-code.txt
+whatsapp-qr.png
+whatsapp-worker.log
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Database files
+db.json
+*.db
+*.sqlite
+*.sqlite3
+backups/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory
+coverage/
+.nyc_output
+
+# Build outputs
+build/
+dist/
+out/
+.next/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+
+# Large media files
+*.mp4
+*.avi
+*.mov
+*.wmv
+*.zip
+*.tar
+*.gz
+*.7z
+
+# Test files
+*.test.js
+*.spec.js
+
+# Backup files
+*.backup
+*.bak
+
+# Production build
+client/build/
+public/build/
+
+# SSL certificates
+*.pem
+*.key
+*.crt

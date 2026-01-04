@@ -1,0 +1,81 @@
+{
+  "name": "demand-supply-dashboard",
+  "version": "3.0.0",
+  "description": "Production-Ready Demand-Supply Dashboard with WhatsApp & Email Alerts",
+  "main": "server-new.js",
+  "scripts": {
+    "start": "node server-new.js",
+    "dev": "nodemon server-new.js",
+    "build": "echo 'Building frontend...' && npm run build:react",
+    "build:react": "react-scripts build",
+    "test": "node test-alerts.js",
+    "test:email": "node -e \"const EmailService = require('./alerts/email.service'); EmailService.sendTestEmail().then(r => console.log('✅ Email sent:', r.messageId)).catch(e => console.error('❌ Error:', e.message))\"",
+    "test:whatsapp": "node -e \"const WhatsAppService = require('./whatsapp-service'); WhatsAppService.testConnection().then(r => console.log('WhatsApp test:', r.success ? '✅ Success' : '❌ Failed')).catch(console.error)\"",
+    "whatsapp:qr": "type whatsapp-qr-code.txt 2>nul || echo 'QR code not generated yet. Run: npm run dev'",
+    "setup": "npm install && echo '✅ Setup complete. Please configure .env file'",
+    "heroku-postbuild": "npm run build",
+    "deploy": "echo 'Ready for deployment to Heroku/Railway/Render'"
+  },
+  "keywords": [
+    "dashboard",
+    "demand",
+    "supply",
+    "whatsapp",
+    "email",
+    "construction",
+    "procurement",
+    "production"
+  ],
+  "author": "BB Construction",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "json-server": "^0.17.4",
+    "moment": "^2.29.4",
+    "node-schedule": "^2.1.1",
+    "nodemailer": "^6.9.7",
+    "puppeteer": "^21.6.1",
+    "puppeteer-core": "^21.6.1",
+    "qrcode-terminal": "^0.12.0",
+    "whatsapp-web.js": "^1.23.0",
+    "compression": "^1.7.4",
+    "helmet": "^7.1.0",
+    "morgan": "^1.10.0",
+    "serve-favicon": "^2.5.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-scripts": "^5.0.1",
+    "recharts": "^2.10.4",
+    "xlsx": "^0.18.5",
+    "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.8.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/demand-supply-dashboard.git"
+  },
+  "homepage": "https://your-app.herokuapp.com",
+  "proxy": "http://localhost:3001"
+}
