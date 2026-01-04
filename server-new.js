@@ -2594,3 +2594,12 @@ process.on('unhandledRejection', (reason, promise) => {
 });
 
 module.exports = app; // For testing
+// ============================================
+// VERCEL EXPORT - ADD THIS AT THE VERY END
+// ============================================
+
+// If 'app' is your Express app variable, export it
+// Find what your app variable is called (might be 'app' or 'server')
+module.exports = app; // or module.exports = server;
+
+// ============================================
