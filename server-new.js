@@ -1,3 +1,12 @@
+
+// Vercel requires this
+const express = require('express');
+const app = express();
+
+// Your existing 2300+ lines of code...
+
+// Export for Vercel
+module.exports = app;
 // ============================================
 // RAILWAY PRODUCTION CONFIGURATION
 // Add this at the VERY TOP of your file
