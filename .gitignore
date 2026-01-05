@@ -105,3 +105,5 @@ public/build/
 *.pem
 *.key
 *.crt
+.vercel
+.env*.local

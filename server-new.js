@@ -1,133 +1,8 @@
-
-// Vercel requires this
-const express = require('express');
-const app = express();
-
-// Your existing 2300+ lines of code...
-
-// Export for Vercel
-module.exports = app;
-// ============================================
-// RAILWAY PRODUCTION CONFIGURATION
-// Add this at the VERY TOP of your file
-// ============================================
-
-// Essential Railway variables
-const PORT = process.env.PORT || 3000;  // Railway uses 3000
-const NODE_ENV = process.env.NODE_ENV || 'development';
-
-// Email configuration
-const EMAIL_CONFIG = {
-  host: process.env.EMAIL_HOST || 'smtp.gmail.com',
-  port: parseInt(process.env.EMAIL_PORT) || 587,
-  user: process.env.EMAIL_USER || 'bbdemandsupply@gmail.com',
-  pass: process.env.EMAIL_PASSWORD || '',
-  from: process.env.EMAIL_FROM || 'bbdemandsupply@gmail.com',
-  to: process.env.EMAIL_TO || 'bbdemandsupply@gmail.com'
-};
-
-// WhatsApp configuration
-const WHATSAPP_CONFIG = {
-  enabled: process.env.WHATSAPP_ENABLED !== 'false',
-  groupName: process.env.WHATSAPP_GROUP_NAME || 'BB-Demand & Supply',
-  sessionPath: './whatsapp_session'
-};
-
-// Log configuration
-console.log('🚀 Railway Deployment Configuration:');
-console.log('==================================');
-console.log(`Port: ${PORT}`);
-console.log(`Environment: ${NODE_ENV}`);
-console.log(`Email User: ${EMAIL_CONFIG.user ? '✅ Set' : '❌ Not set'}`);
-console.log(`Email Password: ${EMAIL_CONFIG.pass ? '✅ Set' : '❌ Not set'}`);
-console.log(`WhatsApp Group: ${WHATSAPP_CONFIG.groupName}`);
-console.log('==================================');
-
-// ============================================
-// END OF CONFIGURATION
-// Your existing 2300+ lines continue below...
-// ============================================
-// ============================================
-// PRODUCTION DEPLOYMENT CONFIGURATION
-// Add this section at the VERY TOP of your file
-// ============================================
-
-// Dynamic port binding for Render/Railway/Heroku
-const PORT = process.env.PORT || 3001;
-
-// Production CORS settings
-const corsOptions = {
-  origin: function (origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-    
-    const allowedOrigins = [
-      'http://localhost:3000',
-      'http://localhost:3001',
-      'https://demand-supply-dashboard.onrender.com',
-      'https://*.onrender.com',
-      'https://your-app-name.onrender.com'  // Replace with your actual Render URL
-    ];
-    
-    if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV !== 'production') {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true,
-  optionsSuccessStatus: 200
-};
-
-// Production error handling middleware
-const productionErrorHandler = (err, req, res, next) => {
-  console.error('Production Error:', {
-    message: err.message,
-    stack: process.env.NODE_ENV === 'production' ? 'Hidden' : err.stack,
-    path: req.path,
-    method: req.method,
-    timestamp: new Date().toISOString()
-  });
-  
-  res.status(err.status || 500).json({
-    success: false,
-    message: process.env.NODE_ENV === 'production' 
-      ? 'Something went wrong. Please try again later.' 
-      : err.message,
-    ...(process.env.NODE_ENV !== 'production' && { stack: err.stack })
-  });
-};
-
-// Database backup function for production
-const setupProductionBackup = () => {
-  if (process.env.NODE_ENV === 'production') {
-    const fs = require('fs');
-    const path = require('path');
-    const BACKUP_DIR = './backups';
-    
-    if (!fs.existsSync(BACKUP_DIR)) {
-      fs.mkdirSync(BACKUP_DIR, { recursive: true });
-    }
-    
-    // Backup on startup
-    if (fs.existsSync('db.json')) {
-      const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-      const backupFile = path.join(BACKUP_DIR, `db_backup_${timestamp}.json`);
-      fs.copyFileSync('db.json', backupFile);
-      console.log(`✅ Production backup created: ${backupFile}`);
-    }
-  }
-};
-
-// ============================================
-// END OF PRODUCTION CONFIGURATION
-// Your existing 2300+ lines of code follow below...
-// ============================================
 // ===================================================
-// DEMAND-SUPPLY DASHBOARD BACKEND - ONLINE VERSION
-// WHATSAPP GROUP MESSAGING - ROBUST VERSION
+// DEMAND-SUPPLY DASHBOARD BACKEND - VERCEL DEPLOYMENT
 // ===================================================
 
+// Vercel requires this to be at the TOP
 const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
@@ -135,11 +10,13 @@ const path = require('path');
 const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
 const schedule = require('node-schedule');
-require('dotenv').config(); // Added for environment variables
+require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 3001; // Use environment variable or default
-const BASE_URL = process.env.BASE_URL || `http://localhost:${PORT}`; // For online URL
+
+// ✅ FIX 1: PORT for Vercel - REMOVE ALL OTHER PORT DECLARATIONS
+const PORT = process.env.PORT || 3001;
+const BASE_URL = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : `http://localhost:${PORT}`;
 
 // Try to load PDF dependencies with fallback
 let PDFDocument, moment;
@@ -152,11 +29,16 @@ try {
   console.warn('PDF report generation will be disabled until dependencies are installed.');
 }
 
-// Enhanced CORS configuration for online access
+// Enhanced CORS configuration for Vercel
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
-    ? [process.env.FRONTEND_URL, 'https://yourdomain.com'] // Add your frontend URL
-    : '*', // For development
+    ? [
+        process.env.FRONTEND_URL, 
+        'https://demand-supply-app.vercel.app',
+        'https://demand-supply-dashboard.vercel.app',
+        'http://localhost:3000'
+      ]
+    : '*',
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With']
@@ -2403,203 +2285,26 @@ app.use((err, req, res, next) => {
     timestamp: new Date().toISOString()
   });
 });
-// ============================================
-// PRODUCTION SERVER STARTUP
-// Add this section at the END of your file, before app.listen
-// ============================================
 
-// Use production error handler
-if (process.env.NODE_ENV === 'production') {
-  app.use(productionErrorHandler);
-  
-  // Security headers
-  const helmet = require('helmet');
-  app.use(helmet({
-    contentSecurityPolicy: {
-      directives: {
-        defaultSrc: ["'self'"],
-        styleSrc: ["'self'", "'unsafe-inline'"],
-        scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
-        imgSrc: ["'self'", "data:", "https:"],
-        connectSrc: ["'self'"],
-        fontSrc: ["'self'"],
-        objectSrc: ["'none'"],
-        mediaSrc: ["'self'"],
-        frameSrc: ["'none'"]
-      }
-    },
-    crossOriginEmbedderPolicy: false
-  }));
-  
-  // Compression
-  const compression = require('compression');
-  app.use(compression());
-  
-  // Request logging
-  const morgan = require('morgan');
-  app.use(morgan('combined'));
-}
-
-// Health check endpoint for Render/Railway
-app.get('/api/health', (req, res) => {
-  res.json({
-    status: 'ok',
-    service: 'Demand-Supply Dashboard',
-    version: '3.0.0',
-    timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV || 'development',
-    uptime: process.uptime(),
-    memory: process.memoryUsage()
-  });
-});
-
-// Production static file serving
-if (process.env.NODE_ENV === 'production') {
-  const path = require('path');
-  
-  // Serve React build if exists
-  if (require('fs').existsSync(path.join(__dirname, 'build'))) {
-    app.use(express.static(path.join(__dirname, 'build')));
-    app.get('*', (req, res) => {
-      res.sendFile(path.join(__dirname, 'build', 'index.html'));
-    });
-  }
-}
-
-// ============================================
-// SERVER START - MODIFY THIS LINE IN YOUR FILE
-// ============================================
-// Find this line in your existing code:
-// app.listen(3001, () => { ... })
-// Replace it with:
-app.listen(PORT, () => {
-  console.log(`
-  ========================================
-  🚀 DEMAND-SUPPLY DASHBOARD SERVER
-  ========================================
-  Port: ${PORT}
-  Environment: ${process.env.NODE_ENV || 'development'}
-  Time: ${new Date().toLocaleString()}
-  PID: ${process.pid}
-  ========================================
-  `);
-  
-  // Setup production features
-  if (process.env.NODE_ENV === 'production') {
-    setupProductionBackup();
-    
-    // Log deployment info
-    console.log('✅ Production mode activated');
-    console.log('✅ CORS configured for Render deployment');
-    console.log('✅ Security headers enabled');
-    console.log('✅ Health check available at /api/health');
-    
-    // WhatsApp status check
-    if (typeof WhatsAppService !== 'undefined') {
-      console.log('📱 WhatsApp Service:', WhatsAppService.isConnected ? '✅ Connected' : '❌ Disconnected');
-    }
-  }
-});
 // ===================================================
-// START SERVER
+// ✅ FIX 2: SERVER START FOR VERCEL
 // ===================================================
 
-const server = app.listen(PORT, '0.0.0.0', () => {
-  console.log('='.repeat(60));
-  console.log('🚀 DEMAND-SUPPLY DASHBOARD v8.8 - ONLINE VERSION');
-  console.log(`📊 Server: ${BASE_URL}`);
-  console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`📱 WhatsApp Group: "${WHATSAPP_CONFIG.groupName}"`);
-  console.log('='.repeat(60));
-  
-  console.log('\n🔧 ENHANCED FOR ONLINE DEPLOYMENT:');
-  console.log('✅ 1. Environment variable support');
-  console.log('✅ 2. Dynamic port binding (for cloud hosting)');
-  console.log('✅ 3. Enhanced CORS configuration');
-  console.log('✅ 4. Security headers');
-  console.log('✅ 5. Organized file structure');
-  console.log('✅ 6. Error handling middleware');
-  console.log('✅ 7. Health check endpoints');
-  console.log('✅ 8. System monitoring endpoints');
-  
-  console.log('\n👥 DEFAULT ADMIN USERS:');
-  console.log('• admin (Administrator) - Master admin');
-  console.log('• construction (Construction Manager) - Can manage demands');
-  console.log('• procurement (Procurement Officer) - Can update supplies');
-  console.log('• azhar.construction (Azhar) - Construction user');
-  
-  console.log('\n📊 CLOUD DEPLOYMENT READY:');
-  console.log('1. Host on Render.com, Railway.app, or Heroku');
-  console.log('2. Set environment variables in hosting platform');
-  console.log('3. Database stored in /data directory');
-  console.log('4. Reports stored in /reports directory');
-  console.log('5. WhatsApp sessions in /sessions directory');
-  
-  if (!PDFDocument || !moment) {
-    console.log('\n⚠️ IMPORTANT: PDF DEPENDENCIES MISSING');
-    console.log('To enable PDF report generation, add to package.json:');
-    console.log('"dependencies": { "pdfkit": "^0.14.0", "moment": "^2.29.4" }');
-    console.log('📊 System will work without PDF for now, sending summary only.');
-  } else {
-    console.log('\n✅ PDF dependencies are installed and ready!');
-  }
-  
-  console.log('\n🔧 ENVIRONMENT VARIABLES NEEDED:');
-  console.log('• PORT (optional, default: 3001)');
-  console.log('• BASE_URL (your domain or server URL)');
-  console.log('• NODE_ENV (production/development)');
-  console.log('• WHATSAPP_GROUP_NAME (optional)');
-  console.log('• WHATSAPP_SESSION_NAME (optional)');
-  console.log('• FRONTEND_URL (for CORS, if frontend is separate)');
-  
-  console.log('\n📱 ACCESS FROM ANY DEVICE:');
-  console.log('• Use server URL on any device browser');
-  console.log('• Mobile: Add to home screen for app-like experience');
-  console.log('• Desktop: Access via browser or PWA');
-  
-  console.log('='.repeat(60));
-  
-  // Start WhatsApp
-  initializeWhatsApp();
-});
-
-// Handle exit gracefully
-process.on('SIGINT', () => {
-  console.log('\n👋 Shutting down gracefully...');
-  
-  // Cancel scheduled report
-  if (dailyReportJob) {
-    dailyReportJob.cancel();
-    console.log('📅 Daily report scheduler stopped');
-  }
-  
-  if (whatsappClient) {
-    whatsappClient.destroy();
-    console.log('📱 WhatsApp client destroyed');
-  }
-  
-  server.close(() => {
-    console.log('✅ Server closed');
-    process.exit(0);
+// Start server only if not running on Vercel
+if (process.env.VERCEL !== '1') {
+  // ✅ FIX 2: Changed from app.listen(3001) to app.listen(PORT)
+  app.listen(PORT, () => {
+    console.log('='.repeat(60));
+    console.log('🚀 DEMAND-SUPPLY DASHBOARD v8.8 - VERCEL READY');
+    console.log(`📊 Server: ${BASE_URL}`);
+    console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`📱 WhatsApp Group: "${WHATSAPP_CONFIG.groupName}"`);
+    console.log('='.repeat(60));
+    
+    // Start WhatsApp
+    initializeWhatsApp();
   });
-});
+}
 
-// Handle uncaught errors
-process.on('uncaughtException', (error) => {
-  console.error('⚠️ Uncaught Exception:', error);
-});
-
-process.on('unhandledRejection', (reason, promise) => {
-  console.error('⚠️ Unhandled Rejection at:', promise, 'reason:', reason);
-});
-
-module.exports = app; // For testing
-// ============================================
-// VERCEL EXPORT - ADD THIS AT THE VERY END
-// ============================================
-
-// If 'app' is your Express app variable, export it
-// Find what your app variable is called (might be 'app' or 'server')
-module.exports = app; // or module.exports = server;
-
-// ============================================
+// ✅ FIX 3: EXPORT FOR VERCEL - ADD THIS AT THE VERY END
+module.exports = app;
