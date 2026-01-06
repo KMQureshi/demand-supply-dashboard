@@ -1,0 +1,52 @@
+# ===============================
+# Node & package managers
+# ===============================
+node_modules/
+npm-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ===============================
+# Build outputs
+# ===============================
+build/
+dist/
+.out/
+.next/
+
+# ===============================
+# Environment files
+# ===============================
+.env
+.env.local
+.env.development
+.env.production
+
+# ===============================
+# Logs & temp files
+# ===============================
+*.log
+*.tmp
+*.cache
+
+# ===============================
+# OS / Editor junk
+# ===============================
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# ===============================
+# WhatsApp / Puppeteer (CRITICAL)
+# ===============================
+backend/sessions/
+backend/whatsapp-profile/
+backend/.wwebjs_auth/
+backend/.wwebjs_cache/
+
+# ===============================
+# Git (optional but safe)
+# ===============================
+.git/
+.gitignore

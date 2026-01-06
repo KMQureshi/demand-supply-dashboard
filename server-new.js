@@ -6,13 +6,29 @@
 const express = require('express');
 const cors = require('cors');
 const fs = require('fs');
-const path = require('path');
+const path = require('path');  // <-- make sure path is required BEFORE using it
 const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
 const schedule = require('node-schedule');
 require('dotenv').config();
 
+// Determine paths for sessions and reports
+const sessionsPath = process.env.VERCEL ? path.join('/tmp', 'sessions') : path.join(__dirname, 'sessions');
+const reportsPath  = process.env.VERCEL ? path.join('/tmp', 'reports')  : path.join(__dirname, 'reports');
+
+// Create folders if they don't exist
+[sessionsPath, reportsPath].forEach(folder => {
+    if (!fs.existsSync(folder)) fs.mkdirSync(folder, { recursive: true });
+});
+
 const app = express();
+
+// =====================
+// Step 2: Middleware
+// =====================
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // ✅ FIX 1: PORT for Vercel - REMOVE ALL OTHER PORT DECLARATIONS
 const PORT = process.env.PORT || 3001;

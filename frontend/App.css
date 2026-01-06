@@ -1,0 +1,43 @@
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f7f9fc;
+  margin: 0;
+  padding: 0;
+}
+
+.login-container {
+  padding: 50px;
+  text-align: center;
+}
+
+button {
+  padding: 5px 15px;
+  margin-top: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  border: none;
+  background-color: #3498db;
+  color: white;
+  font-weight: bold;
+}
+
+button:hover {
+  background-color: #2980b9;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th, td {
+  padding: 8px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+th {
+  background-color: #3498db;
+  color: white;
+}
