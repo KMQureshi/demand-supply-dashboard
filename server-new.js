@@ -1,20 +1,12 @@
-# Create new server-new.js
-@'
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
 
 const app = express();
-
-// Middleware
 app.use(cors());
 app.use(express.json());
 
-// ===================================================
-// GUARANTEED WORKING ENDPOINTS
-// ===================================================
-
-// 1. Health endpoint (ALWAYS WORKS)
+// Health endpoint
 app.get("/api/health", (req, res) => {
   res.json({
     success: true,
@@ -27,7 +19,7 @@ app.get("/api/health", (req, res) => {
   });
 });
 
-// 2. Root endpoint (ALWAYS WORKS)
+// Root endpoint
 app.get("/", (req, res) => {
   res.json({
     app: "Demand-Supply Dashboard",
@@ -48,7 +40,7 @@ app.get("/", (req, res) => {
   });
 });
 
-// 3. System info endpoint
+// System info endpoint
 app.get("/api/system/info", (req, res) => {
   res.json({
     success: true,
@@ -59,16 +51,11 @@ app.get("/api/system/info", (req, res) => {
       uptime: process.uptime(),
       environment: process.env.NODE_ENV || "development",
       isVercel: !!process.env.VERCEL
-    },
-    deployment: {
-      vercelUrl: process.env.VERCEL_URL,
-      vercelEnv: process.env.VERCEL_ENV,
-      vercelRegion: process.env.VERCEL_REGION
     }
   });
 });
 
-// 4. Test WhatsApp endpoint
+// WhatsApp status endpoint
 app.get("/api/whatsapp/status", (req, res) => {
   res.json({
     success: true,
@@ -77,6 +64,29 @@ app.get("/api/whatsapp/status", (req, res) => {
       status: process.env.VERCEL ? "disabled-on-vercel" : "available-locally",
       groupName: process.env.WHATSAPP_GROUP_NAME || "BB-Demand & Supply",
       isVercel: !!process.env.VERCEL
+    }
+  });
+});
+
+// Test WhatsApp endpoint
+app.post("/api/test/whatsapp", (req, res) => {
+  res.json({
+    success: true,
+    message: "WhatsApp would be simulated on Vercel",
+    simulated: true,
+    note: "Use local deployment for real WhatsApp"
+  });
+});
+
+// Login endpoint
+app.post("/api/login", (req, res) => {
+  res.json({
+    success: true,
+    user: {
+      id: 1,
+      username: "admin",
+      role: "admin",
+      name: "Administrator"
     }
   });
 });
@@ -96,8 +106,7 @@ app.use((err, req, res, next) => {
   console.error("Server error:", err.message);
   res.status(500).json({
     success: false,
-    error: "Internal server error",
-    message: process.env.NODE_ENV === "development" ? err.message : undefined
+    error: "Internal server error"
   });
 });
 
@@ -113,4 +122,3 @@ if (!process.env.VERCEL) {
 } else {
   console.log("✅ Vercel serverless function ready");
 }
-'@ | Out-File server-new.js -Encoding UTF8
