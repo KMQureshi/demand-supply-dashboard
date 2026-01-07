@@ -1,2 +1,0 @@
-﻿# Create minimal vercel.json
-'{"builds":[{"src":"server-new.js","use":"@vercel/node"}]}' | Out-File vercel.json -Encoding UTF8
