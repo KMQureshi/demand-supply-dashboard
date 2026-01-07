@@ -1,3 +1,8 @@
+# 1. Go to your WORKING app folder
+cd ..\demand-supply-app
+
+# 2. Create the updated package.json
+@'
 {
   "name": "demand-supply-dashboard",
   "version": "8.8.0",
@@ -9,8 +14,8 @@
     "dev": "nodemon server-new.js",
     "dev:win": "nodemon server-new.js --ignore whatsapp_sessions --ignore data --ignore reports",
     "prod": "NODE_ENV=production node server-new.js",
-    "build": "echo 'Vercel build step: No compilation needed'",
-    "vercel-build": "npm install --omit=dev && echo 'Vercel build completed successfully'",
+    "build": "echo \"Vercel build step: No compilation needed\"",
+    "vercel-build": "npm install --omit=dev && echo \"Vercel build completed successfully\"",
     "vercel-dev": "vercel dev",
     "setup": "npm install",
     "setup:clean": "npm run clean && npm install",
@@ -28,10 +33,6 @@
     "demand:list": "curl -s http://localhost:3001/api/demand",
     "alerts:list": "curl -s http://localhost:3001/api/alerts",
     "report:stats": "curl -s http://localhost:3001/api/report/stats",
-    "reset:db": "rm -f data/db.json && echo 'Database reset'",
-    "reset:db:win": "if exist data\\db.json del data\\db.json && echo Database reset",
-    "reset:all": "rm -rf data/* whatsapp_sessions/* reports/* && echo 'All data cleared'",
-    "reset:all:win": "rmdir /s /q data whatsapp_sessions reports 2>nul && mkdir data whatsapp_sessions reports && echo All data cleared",
     "check": "node --version && npm --version",
     "audit": "npm audit",
     "audit:fix": "npm audit fix",
@@ -103,3 +104,54 @@
     "report_minute": 0
   }
 }
+'@ | Out-File -FilePath "package.json" -Encoding UTF8
+
+# 3. Create vercel.json
+@'
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "server-new.js",
+      "use": "@vercel/node",
+      "config": {
+        "maxLambdaSize": "15mb",
+        "includeFiles": [
+          "package.json",
+          "package-lock.json",
+          ".env.example"
+        ]
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/",
+      "dest": "server-new.js",
+      "methods": ["GET", "HEAD"]
+    },
+    {
+      "src": "/api/(.*)",
+      "dest": "server-new.js",
+      "methods": ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD"]
+    },
+    {
+      "src": "/(.*)",
+      "dest": "server-new.js"
+    }
+  ],
+  "functions": {
+    "server-new.js": {
+      "maxDuration": 60,
+      "memory": 1024,
+      "runtime": "nodejs18.x"
+    }
+  },
+  "env": {
+    "NODE_ENV": "production"
+  }
+}
+'@ | Out-File -FilePath "vercel.json" -Encoding UTF8
+
+# 4. Now check git status
+git status
