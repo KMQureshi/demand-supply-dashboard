@@ -1,78 +1,14 @@
-# 1. Go to your WORKING app folder
-cd ..\demand-supply-app
-
-# 2. Create the updated package.json
-@'
 {
   "name": "demand-supply-dashboard",
   "version": "8.8.0",
-  "description": "Demand-Supply Dashboard with WhatsApp Integration - Vercel Optimized",
+  "description": "Demand-Supply Dashboard with WhatsApp Integration - Vercel Ready",
   "main": "server-new.js",
-  "private": true,
   "scripts": {
     "start": "node server-new.js",
     "dev": "nodemon server-new.js",
-    "dev:win": "nodemon server-new.js --ignore whatsapp_sessions --ignore data --ignore reports",
-    "prod": "NODE_ENV=production node server-new.js",
-    "build": "echo \"Vercel build step: No compilation needed\"",
-    "vercel-build": "npm install --omit=dev && echo \"Vercel build completed successfully\"",
-    "vercel-dev": "vercel dev",
-    "setup": "npm install",
-    "setup:clean": "npm run clean && npm install",
-    "clean": "rm -rf node_modules package-lock.json",
-    "clean:win": "rmdir /s /q node_modules && del package-lock.json",
-    "reinstall": "npm run clean && npm install",
-    "reinstall:win": "npm run clean:win && npm install",
-    "test": "echo \"Tests passed successfully!\" && exit 0",
-    "test:vercel": "vercel --prod",
-    "test:api": "curl -s http://localhost:3001/",
-    "test:health": "curl -s http://localhost:3001/api/health",
-    "deploy": "vercel --prod",
-    "deploy:preview": "vercel",
-    "whatsapp:status": "curl -s http://localhost:3001/api/whatsapp/status",
-    "demand:list": "curl -s http://localhost:3001/api/demand",
-    "alerts:list": "curl -s http://localhost:3001/api/alerts",
-    "report:stats": "curl -s http://localhost:3001/api/report/stats",
-    "check": "node --version && npm --version",
-    "audit": "npm audit",
-    "audit:fix": "npm audit fix",
-    "update": "npm update",
-    "info": "echo Demand-Supply Dashboard v8.8.0 - Vercel Ready"
+    "build": "npm install",
+    "vercel-build": "npm install"
   },
-  "keywords": [
-    "dashboard",
-    "demand",
-    "supply",
-    "construction",
-    "whatsapp",
-    "inventory",
-    "management",
-    "tracking",
-    "alerts",
-    "notifications",
-    "reports",
-    "api",
-    "backend",
-    "nodejs",
-    "express",
-    "vercel",
-    "serverless",
-    "production",
-    "enterprise"
-  ],
-  "author": "BB Construction Team <development@bbconstruction.com>",
-  "contributors": [
-    "Khalid Qureshi <khalid@bbconstruction.com>"
-  ],
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/kmqureshi/demand-supply-app.git"
-  },
-  "bugs": {
-    "url": "https://github.com/kmqureshi/demand-supply-app/issues"
-  },
-  "homepage": "https://demand-supply-app.vercel.app",
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
@@ -85,73 +21,6 @@ cd ..\demand-supply-app
     "nodemon": "^3.1.9"
   },
   "engines": {
-    "node": ">=18.0.0",
-    "npm": ">=9.0.0"
-  },
-  "files": [
-    "server-new.js",
-    "package.json",
-    "package-lock.json",
-    ".env.example",
-    "vercel.json",
-    "README.md"
-  ],
-  "config": {
-    "port": 3001,
-    "whatsapp_group": "BB-Demand & Supply",
-    "session_name": "demand-supply-session",
-    "report_hour": 15,
-    "report_minute": 0
+    "node": ">=18.0.0"
   }
 }
-'@ | Out-File -FilePath "package.json" -Encoding UTF8
-
-# 3. Create vercel.json
-@'
-{
-  "version": 2,
-  "builds": [
-    {
-      "src": "server-new.js",
-      "use": "@vercel/node",
-      "config": {
-        "maxLambdaSize": "15mb",
-        "includeFiles": [
-          "package.json",
-          "package-lock.json",
-          ".env.example"
-        ]
-      }
-    }
-  ],
-  "routes": [
-    {
-      "src": "/",
-      "dest": "server-new.js",
-      "methods": ["GET", "HEAD"]
-    },
-    {
-      "src": "/api/(.*)",
-      "dest": "server-new.js",
-      "methods": ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS", "HEAD"]
-    },
-    {
-      "src": "/(.*)",
-      "dest": "server-new.js"
-    }
-  ],
-  "functions": {
-    "server-new.js": {
-      "maxDuration": 60,
-      "memory": 1024,
-      "runtime": "nodejs18.x"
-    }
-  },
-  "env": {
-    "NODE_ENV": "production"
-  }
-}
-'@ | Out-File -FilePath "vercel.json" -Encoding UTF8
-
-# 4. Now check git status
-git status
