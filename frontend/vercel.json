@@ -1,15 +1,11 @@
+# Simple vercel.json
+@'
 {
-  "version": 2,
   "builds": [
     {
       "src": "server-new.js",
       "use": "@vercel/node"
     }
-  ],
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "server-new.js"
-    }
   ]
 }
+'@ | Out-File vercel.json -Encoding UTF8
