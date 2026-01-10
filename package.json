@@ -1,1 +1,15 @@
-'{"name":"demand-supply-dashboard","version":"1.0.0","main":"server.js","scripts":{"start":"node server.js","build":"npm install"},"dependencies":{"express":"4.18.2"}}' | Out-File package.json -Encoding UTF8
+﻿{
+  "name": "demand-supply-app",
+  "version": "1.0.0",
+  "main": "server-new.js",
+  "scripts": {
+    "start": "node server-new.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "axios": "^1.6.0",
+    "whatsapp-web.js": "^1.23.0",
+    "qrcode-terminal": "^0.12.0"
+  }
+}
